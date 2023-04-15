@@ -2,12 +2,14 @@ import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/domain/entities/movie.dart';
 import 'package:ditonton/presentation/pages/popular_movies_page.dart';
 import 'package:ditonton/presentation/provider/popular_movies_notifier.dart';
+import 'package:ditonton/presentation/widgets/movie_card_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 
+import '../../dummy_data/dummy_objects.dart';
 import 'popular_movies_page_test.mocks.dart';
 
 @GenerateMocks([PopularMoviesNotifier])
@@ -40,16 +42,16 @@ void main() {
     expect(progressBarFinder, findsOneWidget);
   });
 
-  testWidgets('Page should display ListView when data is loaded',
+  testWidgets('Page should display a list of MovieCard when data is loaded',
       (WidgetTester tester) async {
     when(mockNotifier.state).thenReturn(RequestState.Loaded);
-    when(mockNotifier.movies).thenReturn(<Movie>[]);
+    when(mockNotifier.movies).thenReturn(testMovieList);
 
-    final listViewFinder = find.byType(ListView);
+    final listViewFinder = find.byType(MovieCard);
 
     await tester.pumpWidget(_makeTestableWidget(PopularMoviesPage()));
 
-    expect(listViewFinder, findsOneWidget);
+    expect(listViewFinder, findsWidgets);
   });
 
   testWidgets('Page should display text with message when Error',

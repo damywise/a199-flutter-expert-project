@@ -1,4 +1,4 @@
-import 'package:dartz/dartz.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:ditonton/domain/entities/movie.dart';
 import 'package:ditonton/domain/usecases/get_movie_detail.dart';
 import 'package:ditonton/domain/usecases/get_movie_recommendations.dart';
@@ -216,6 +216,20 @@ void main() {
       expect(provider.watchlistMessage, 'Failed');
       expect(listenerCallCount, 1);
     });
+  });
+
+  test('should update watchlist message when remove watchlist failed',
+      () async {
+    // arrange
+    when(mockRemoveWatchlist.execute(testMovieDetail))
+        .thenAnswer((_) async => Left(DatabaseFailure('Failed')));
+    when(mockGetWatchlistStatus.execute(testMovieDetail.id))
+        .thenAnswer((_) async => true);
+    // act
+    await provider.removeFromWatchlist(testMovieDetail);
+    // assert
+    expect(provider.watchlistMessage, 'Failed');
+    expect(listenerCallCount, 1);
   });
 
   group('on Error', () {

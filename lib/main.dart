@@ -50,6 +50,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData.dark().copyWith(
+          useMaterial3: true,
           colorScheme: kColorScheme,
           primaryColor: kRichBlack,
           scaffoldBackgroundColor: kRichBlack,

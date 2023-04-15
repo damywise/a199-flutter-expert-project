@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:dartz/dartz.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:ditonton/data/models/genre_model.dart';
 import 'package:ditonton/data/models/movie_detail_model.dart';
 import 'package:ditonton/data/models/movie_model.dart';
@@ -77,7 +77,7 @@ void main() {
       // assert
       verify(mockRemoteDataSource.getNowPlayingMovies());
       /* workaround to test List in Right. Issue: https://github.com/spebbe/dartz/issues/80 */
-      final resultList = result.getOrElse(() => []);
+      final resultList = result.getOrElse((_) => []);
       expect(resultList, tMovieList);
     });
 
@@ -119,7 +119,7 @@ void main() {
       final result = await repository.getPopularMovies();
       // assert
       /* workaround to test List in Right. Issue: https://github.com/spebbe/dartz/issues/80 */
-      final resultList = result.getOrElse(() => []);
+      final resultList = result.getOrElse((_) => []);
       expect(resultList, tMovieList);
     });
 
@@ -159,7 +159,7 @@ void main() {
       final result = await repository.getTopRatedMovies();
       // assert
       /* workaround to test List in Right. Issue: https://github.com/spebbe/dartz/issues/80 */
-      final resultList = result.getOrElse(() => []);
+      final resultList = result.getOrElse((_) => []);
       expect(resultList, tMovieList);
     });
 
@@ -269,7 +269,7 @@ void main() {
       // assert
       verify(mockRemoteDataSource.getMovieRecommendations(tId));
       /* workaround to test List in Right. Issue: https://github.com/spebbe/dartz/issues/80 */
-      final resultList = result.getOrElse(() => []);
+      final resultList = result.getOrElse((_) => []);
       expect(resultList, equals(tMovieList));
     });
 
@@ -313,7 +313,7 @@ void main() {
       final result = await repository.searchMovies(tQuery);
       // assert
       /* workaround to test List in Right. Issue: https://github.com/spebbe/dartz/issues/80 */
-      final resultList = result.getOrElse(() => []);
+      final resultList = result.getOrElse((_) => []);
       expect(resultList, tMovieList);
     });
 
@@ -406,7 +406,7 @@ void main() {
       // act
       final result = await repository.getWatchlistMovies();
       // assert
-      final resultList = result.getOrElse(() => []);
+      final resultList = result.getOrElse((_) => []);
       expect(resultList, [testWatchlistMovie]);
     });
   });
