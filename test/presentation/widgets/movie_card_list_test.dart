@@ -13,11 +13,11 @@ class MockNavigatorObserver extends Mock implements NavigatorObserver {}
 
 void main() {
   group('MovieCard widget test', () {
-    final movie = testMovie;
+    const movie = testMovie;
 
     testWidgets('should display MovieCard widget', (WidgetTester tester) async {
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: Scaffold(
             body: MovieCard(movie),
           ),
@@ -36,7 +36,7 @@ void main() {
 
       await tester.pumpWidget(
         MaterialApp(
-          home: Scaffold(
+          home: const Scaffold(
             body: MovieCard(movie),
           ),
           navigatorObservers: [mockObserver],
