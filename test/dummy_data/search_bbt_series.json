@@ -1,0 +1,27 @@
+{
+  "page": 1,
+  "results": [
+    {
+      "adult": false,
+      "backdrop_path": "/7RySzFeK3LPVMXcPtqfZnl6u4p1.jpg",
+      "genre_ids": [
+        35
+      ],
+      "id": 1418,
+      "origin_country": [
+        "US"
+      ],
+      "original_language": "en",
+      "original_name": "The Big Bang Theory",
+      "overview": "The sitcom is centered on five characters living in Pasadena, California: roommates Leonard Hofstadter and Sheldon Cooper; Penny, a waitress and aspiring actress who lives across the hall; and Leonard and Sheldon's equally geeky and socially awkward friends and co-workers, mechanical engineer Howard Wolowitz and astrophysicist Raj Koothrappali. The geekiness and intellect of the four guys is contrasted for comic effect with Penny's social skills and common sense.",
+      "popularity": 199.603,
+      "poster_path": "/ooBGRQBdbGzBxAVfExiO8r7kloA.jpg",
+      "first_air_date": "2007-09-24",
+      "name": "The Big Bang Theory",
+      "vote_average": 7.878,
+      "vote_count": 9871
+    }
+  ],
+  "total_pages": 1,
+  "total_results": 1
+}

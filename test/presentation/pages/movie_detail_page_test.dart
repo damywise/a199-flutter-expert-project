@@ -21,14 +21,15 @@ void main() {
     mockNotifier = MockMovieDetailNotifier();
   });
 
-  Widget _makeTestableWidget(Widget body, [Widget? body2]) {
+  Widget makeTestableWidget(Widget body, [Widget? body2]) {
     return ChangeNotifierProvider<MovieDetailNotifier>.value(
       value: mockNotifier,
       child: MaterialApp(
         initialRoute: '/',
         routes: {
           '/': (context) => body,
-          MovieDetailPage.ROUTE_NAME: (context) => body2 ?? SizedBox.shrink(),
+          MovieDetailPage.ROUTE_NAME: (context) =>
+              body2 ?? const SizedBox.shrink(),
         },
       ),
     );
@@ -45,7 +46,7 @@ void main() {
 
     final watchlistButtonIcon = find.byIcon(Icons.add);
 
-    await tester.pumpWidget(_makeTestableWidget(MovieDetailPage(id: 1)));
+    await tester.pumpWidget(makeTestableWidget(const MovieDetailPage(id: 1)));
 
     expect(watchlistButtonIcon, findsOneWidget);
   });
@@ -54,27 +55,29 @@ void main() {
       'Watchlist button should display check icon when movie is added to wathclist',
       (WidgetTester tester) async {
     when(mockNotifier.movieState).thenReturn(RequestState.Loaded);
-    when(mockNotifier.movie).thenReturn(MovieDetail(
-      adult: false,
-      backdropPath: 'backdropPath',
-      genres: [Genre(id: 1, name: 'Action')],
-      id: 1,
-      originalTitle: 'originalTitle',
-      overview: 'overview',
-      posterPath: 'posterPath',
-      releaseDate: 'releaseDate',
-      runtime: 5,
-      title: 'title',
-      voteAverage: 1,
-      voteCount: 1,
-    ));
+    when(mockNotifier.movie).thenReturn(
+      const MovieDetail(
+        adult: false,
+        backdropPath: 'backdropPath',
+        genres: [Genre(id: 1, name: 'Action')],
+        id: 1,
+        originalTitle: 'originalTitle',
+        overview: 'overview',
+        posterPath: 'posterPath',
+        releaseDate: 'releaseDate',
+        runtime: 5,
+        title: 'title',
+        voteAverage: 1,
+        voteCount: 1,
+      ),
+    );
     when(mockNotifier.recommendationState).thenReturn(RequestState.Loaded);
     when(mockNotifier.movieRecommendations).thenReturn(<Movie>[]);
     when(mockNotifier.isAddedToWatchlist).thenReturn(true);
 
     final watchlistButtonIcon = find.byIcon(Icons.check);
 
-    await tester.pumpWidget(_makeTestableWidget(MovieDetailPage(id: 1)));
+    await tester.pumpWidget(makeTestableWidget(const MovieDetailPage(id: 1)));
 
     expect(watchlistButtonIcon, findsOneWidget);
   });
@@ -83,7 +86,22 @@ void main() {
       'Watchlist button should display Snackbar when added to watchlist',
       (WidgetTester tester) async {
     when(mockNotifier.movieState).thenReturn(RequestState.Loaded);
-    when(mockNotifier.movie).thenReturn(testMovieDetail);
+    when(mockNotifier.movie).thenReturn(
+      const MovieDetail(
+        adult: false,
+        backdropPath: 'backdropPath',
+        genres: [],
+        id: 1,
+        originalTitle: 'originalTitle',
+        overview: 'overview',
+        posterPath: 'posterPath',
+        releaseDate: 'releaseDate',
+        runtime: 5,
+        title: 'title',
+        voteAverage: 1,
+        voteCount: 1,
+      ),
+    );
     when(mockNotifier.recommendationState).thenReturn(RequestState.Loaded);
     when(mockNotifier.movieRecommendations).thenReturn(<Movie>[]);
     when(mockNotifier.isAddedToWatchlist).thenReturn(false);
@@ -91,7 +109,7 @@ void main() {
 
     final watchlistButton = find.byType(ElevatedButton);
 
-    await tester.pumpWidget(_makeTestableWidget(MovieDetailPage(id: 1)));
+    await tester.pumpWidget(makeTestableWidget(const MovieDetailPage(id: 1)));
 
     expect(find.byIcon(Icons.add), findsOneWidget);
 
@@ -114,7 +132,7 @@ void main() {
 
     final watchlistButton = find.byType(ElevatedButton);
 
-    await tester.pumpWidget(_makeTestableWidget(MovieDetailPage(id: 1)));
+    await tester.pumpWidget(makeTestableWidget(const MovieDetailPage(id: 1)));
 
     expect(find.byIcon(Icons.check), findsOneWidget);
 
@@ -137,7 +155,7 @@ void main() {
 
     final watchlistButton = find.byType(ElevatedButton);
 
-    await tester.pumpWidget(_makeTestableWidget(MovieDetailPage(id: 1)));
+    await tester.pumpWidget(makeTestableWidget(const MovieDetailPage(id: 1)));
 
     expect(find.byIcon(Icons.add), findsOneWidget);
 
@@ -158,7 +176,7 @@ void main() {
     when(mockNotifier.watchlistMessage).thenReturn('Failed');
     when(mockNotifier.message).thenReturn('Message');
 
-    await tester.pumpWidget(_makeTestableWidget(MovieDetailPage(id: 1)));
+    await tester.pumpWidget(makeTestableWidget(const MovieDetailPage(id: 1)));
 
     expect(find.text(mockNotifier.message), findsOneWidget);
   });
@@ -173,7 +191,7 @@ void main() {
     when(mockNotifier.watchlistMessage).thenReturn('Failed');
     when(mockNotifier.message).thenReturn('Message');
 
-    await tester.pumpWidget(_makeTestableWidget(MovieDetailPage(id: 1)));
+    await tester.pumpWidget(makeTestableWidget(const MovieDetailPage(id: 1)));
 
     expect(find.text(mockNotifier.message), findsOneWidget);
   });
@@ -188,7 +206,7 @@ void main() {
     when(mockNotifier.watchlistMessage).thenReturn('Failed');
     when(mockNotifier.message).thenReturn('Message');
 
-    await tester.pumpWidget(_makeTestableWidget(MovieDetailPage(id: 1)));
+    await tester.pumpWidget(makeTestableWidget(const MovieDetailPage(id: 1)));
 
     expect(find.byType(ClipRRect), findsOneWidget);
   });
@@ -203,7 +221,7 @@ void main() {
     when(mockNotifier.watchlistMessage).thenReturn('Failed');
     when(mockNotifier.message).thenReturn('Message');
 
-    await tester.pumpWidget(_makeTestableWidget(MovieDetailPage(id: 1)));
+    await tester.pumpWidget(makeTestableWidget(const MovieDetailPage(id: 1)));
 
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
   });
@@ -219,7 +237,7 @@ void main() {
     when(mockNotifier.watchlistMessage).thenReturn('Failed');
     when(mockNotifier.message).thenReturn('Message');
 
-    await tester.pumpWidget(_makeTestableWidget(MovieDetailPage(id: 1)));
+    await tester.pumpWidget(makeTestableWidget(const MovieDetailPage(id: 1)));
 
     expect(find.byType(CircularProgressIndicator), findsNWidgets(2));
   });
@@ -234,15 +252,18 @@ void main() {
     when(mockNotifier.watchlistMessage).thenReturn('Failed');
     when(mockNotifier.message).thenReturn('Message');
 
-    await tester.pumpWidget(_makeTestableWidget(MovieDetailPage(id: 1)));
+    await tester.pumpWidget(makeTestableWidget(const MovieDetailPage(id: 1)));
 
     expect(
-        find.byWidgetPredicate((widget) =>
+      find.byWidgetPredicate(
+        (widget) =>
             widget is Container &&
             widget.child == null &&
             widget.decoration == null &&
-            widget.color == null),
-        findsOneWidget);
+            widget.color == null,
+      ),
+      findsOneWidget,
+    );
   });
 
   testWidgets('Should go to new page after tapping recommended movie',
@@ -254,16 +275,20 @@ void main() {
     when(mockNotifier.isAddedToWatchlist).thenReturn(false);
     when(mockNotifier.watchlistMessage).thenReturn('Failed');
 
-    final page1 = MovieDetailPage(id: 1);
-    final page2 = MovieDetailPage(id: 123);
+    const page1 = MovieDetailPage(id: 1);
+    const page2 = MovieDetailPage(id: 123);
 
-    await tester.pumpWidget(_makeTestableWidget(page1, page2));
+    await tester.pumpWidget(makeTestableWidget(page1, page2));
 
     final buttonToTap = find.byWidgetPredicate(
-        (widget) => widget is InkWell && widget.child is ClipRRect);
+      (widget) => widget is InkWell && widget.child is ClipRRect,
+    );
 
     await tester.dragUntilVisible(
-        buttonToTap, find.byType(ListView), const Offset(0, 50));
+      buttonToTap,
+      find.byType(ListView),
+      const Offset(0, 50),
+    );
     await tester.tap(buttonToTap);
     await tester.pump();
     await tester.pump();

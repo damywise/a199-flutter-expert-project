@@ -13,16 +13,16 @@ void main() {
     });
 
     test('Insert watchlist movie', () async {
-      when(databaseHelper.insertWatchlist(testMovieTable))
+      when(databaseHelper.insertWatchlistMovie(testMovieTable))
           .thenAnswer((realInvocation) async => testMovieTable.id);
-      final result = await databaseHelper.insertWatchlist(testMovieTable);
+      final result = await databaseHelper.insertWatchlistMovie(testMovieTable);
       expect(result, 1);
     });
 
     test('Remove watchlist movie', () async {
-      when(databaseHelper.removeWatchlist(testMovieTable))
+      when(databaseHelper.removeWatchlistMovie(testMovieTable))
           .thenAnswer((realInvocation) async => testMovieTable.id);
-      final result = await databaseHelper.removeWatchlist(testMovieTable);
+      final result = await databaseHelper.removeWatchlistMovie(testMovieTable);
       expect(result, 1);
     });
 
@@ -35,8 +35,9 @@ void main() {
 
     test('Get all watchlist movies', () async {
       when(databaseHelper.getWatchlistMovies()).thenAnswer(
-          (realInvocation) async =>
-              [testMovieTable.toJson(), testMovieTable.toJson()]);
+        (realInvocation) async =>
+            [testMovieTable.toJson(), testMovieTable.toJson()],
+      );
       final result = await databaseHelper.getWatchlistMovies();
       expect(result.length, 2);
     });

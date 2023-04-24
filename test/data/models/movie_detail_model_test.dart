@@ -5,7 +5,7 @@ import 'package:ditonton/domain/entities/movie_detail.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  final tMovieDetailModel = MovieDetailResponse(
+  const tMovieDetailModel = MovieDetailResponse(
     adult: false,
     backdropPath: 'backdropPath',
     budget: 1,
@@ -29,7 +29,7 @@ void main() {
     voteCount: 8,
   );
 
-  final tMovieDetail = MovieDetail(
+  const tMovieDetail = MovieDetail(
     adult: false,
     backdropPath: 'backdropPath',
     genres: [Genre(id: 2, name: 'name')],
@@ -48,7 +48,9 @@ void main() {
     'adult': false,
     'backdrop_path': 'backdropPath',
     'budget': 1,
-    'genres': [{'id': 2, 'name': 'name'}],
+    'genres': [
+      {'id': 2, 'name': 'name'}
+    ],
     'homepage': 'homepage',
     'id': 3,
     'imdb_id': 'imdbId',

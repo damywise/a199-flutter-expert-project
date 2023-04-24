@@ -1,7 +1,7 @@
-import 'package:fpdart/fpdart.dart';
 import 'package:ditonton/domain/entities/movie.dart';
 import 'package:ditonton/domain/usecases/search_movies.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../helpers/test_helper.mocks.dart';
@@ -16,7 +16,7 @@ void main() {
   });
 
   final tMovies = <Movie>[];
-  final tQuery = 'Spiderman';
+  const tQuery = 'Spiderman';
 
   test('should get list of movies from the repository', () async {
     // arrange
