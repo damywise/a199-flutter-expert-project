@@ -1,5 +1,5 @@
 [![CI](https://github.com/damywise/a199-flutter-expert-project/actions/workflows/ci.yml/badge.svg)](https://github.com/damywise/a199-flutter-expert-project/actions/workflows/ci.yml)
-
+[![codecov](https://codecov.io/gh/damywise/a199-flutter-expert-project/branch/main/graph/badge.svg?token=V2AP85A964)](https://codecov.io/gh/damywise/a199-flutter-expert-project)
 
 # a199-flutter-expert-project
 
@@ -7,10 +7,12 @@ Repository ini merupakan starter project submission kelas Flutter Expert Dicodin
 
 ---
 
-# Firebase Screenshots
+## Firebase Screenshots
 <img width="1546" alt="image" src="https://user-images.githubusercontent.com/25608913/234176014-1255c283-dc5c-40de-9722-719102dc11dc.png">
 <img width="1546" alt="image" src="https://user-images.githubusercontent.com/25608913/234176048-791d8995-daa7-4bf7-a6b5-6a122e7e9473.png">
 
+## CI Build Screenshot
+<img width="1546" alt="image" src="https://user-images.githubusercontent.com/25608913/234231051-c51abd10-2af6-4518-b657-7be31ea1f6a8.png">
 
 ## Tips Submission Awal
 
