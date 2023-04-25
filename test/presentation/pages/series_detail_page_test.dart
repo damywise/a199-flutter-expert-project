@@ -1,27 +1,56 @@
-import 'package:ditonton/common/state_enum.dart';
-import 'package:ditonton/domain/entities/series.dart';
+import 'package:bloc_test/bloc_test.dart';
+import 'package:ditonton/data/models/global_failure_model.dart';
+import 'package:ditonton/presentation/bloc/series/season_detail_bloc.dart';
+import 'package:ditonton/presentation/bloc/series/series_detail_bloc.dart';
+import 'package:ditonton/presentation/bloc/series/series_recommendation_bloc.dart';
+import 'package:ditonton/presentation/bloc/series/watchlist_series_bloc.dart';
 import 'package:ditonton/presentation/pages/series_detail_page.dart';
-import 'package:ditonton/presentation/provider/series_detail_notifier.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
-import 'package:provider/provider.dart';
+import 'package:mocktail/mocktail.dart';
 
 import '../../dummy_data/dummy_objects.dart';
-import 'series_detail_page_test.mocks.dart';
 
-@GenerateMocks([SeriesDetailNotifier])
+class MockSeriesDetailBloc
+    extends MockBloc<SeriesDetailEvent, SeriesDetailState>
+    implements SeriesDetailBloc {}
+
+class MockSeriesRecommendationBloc
+    extends MockBloc<SeriesRecommendationEvent, SeriesRecommendationState>
+    implements SeriesRecommendationBloc {}
+
+class MockWatchlistSeriesBloc
+    extends MockBloc<WatchlistSeriesEvent, WatchlistSeriesState>
+    implements WatchlistSeriesBloc {}
+
+class MockSeasonDetailBloc
+    extends MockBloc<SeasonDetailEvent, SeasonDetailState>
+    implements SeasonDetailBloc {}
+
 void main() {
-  late MockSeriesDetailNotifier mockNotifier;
+  late MockSeriesDetailBloc mockSeriesDetailBloc;
+  late MockSeasonDetailBloc mockSeasonDetailBloc;
+  late MockSeriesRecommendationBloc mockSeriesRecommendationBloc;
+  late MockWatchlistSeriesBloc mockWatchlistSeriesBloc;
 
   setUp(() {
-    mockNotifier = MockSeriesDetailNotifier();
+    mockSeriesDetailBloc = MockSeriesDetailBloc();
+    mockSeasonDetailBloc = MockSeasonDetailBloc();
+    mockSeriesRecommendationBloc = MockSeriesRecommendationBloc();
+    mockWatchlistSeriesBloc = MockWatchlistSeriesBloc();
   });
 
   Widget makeTestableWidget(Widget body, [Widget? body2]) {
-    return ChangeNotifierProvider<SeriesDetailNotifier>.value(
-      value: mockNotifier,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<SeriesDetailBloc>.value(value: mockSeriesDetailBloc),
+        BlocProvider<SeasonDetailBloc>.value(value: mockSeasonDetailBloc),
+        BlocProvider<SeriesRecommendationBloc>.value(
+          value: mockSeriesRecommendationBloc,
+        ),
+        BlocProvider<WatchlistSeriesBloc>.value(value: mockWatchlistSeriesBloc),
+      ],
       child: MaterialApp(
         initialRoute: '/',
         routes: {
@@ -36,11 +65,14 @@ void main() {
   testWidgets(
       'Watchlist button should display add icon when series not added to watchlist',
       (WidgetTester tester) async {
-    when(mockNotifier.seriesState).thenReturn(RequestState.Loaded);
-    when(mockNotifier.series).thenReturn(testSeriesDetail);
-    when(mockNotifier.recommendationState).thenReturn(RequestState.Loaded);
-    when(mockNotifier.seriesRecommendations).thenReturn(<Series>[]);
-    when(mockNotifier.isAddedToWatchlist).thenReturn(false);
+    when(() => mockSeriesDetailBloc.state)
+        .thenReturn(GetSeriesDetailCompletedState(series: testSeriesDetail));
+    when(() => mockSeriesRecommendationBloc.state).thenReturn(
+      GetSeriesRecommendationCompletedState(series: testSeriesList),
+    );
+    when(() => mockWatchlistSeriesBloc.state).thenReturn(
+      LoadWatchlistStatusSeriesCompletedState(isAddedToWatchlist: false),
+    );
 
     final watchlistButtonIcon = find.byIcon(Icons.add);
 
@@ -52,11 +84,14 @@ void main() {
   testWidgets(
       'Watchlist button should display check icon when series is added to wathclist',
       (WidgetTester tester) async {
-    when(mockNotifier.seriesState).thenReturn(RequestState.Loaded);
-    when(mockNotifier.series).thenReturn(testSeriesDetail);
-    when(mockNotifier.recommendationState).thenReturn(RequestState.Loaded);
-    when(mockNotifier.seriesRecommendations).thenReturn(<Series>[]);
-    when(mockNotifier.isAddedToWatchlist).thenReturn(true);
+    when(() => mockSeriesDetailBloc.state)
+        .thenReturn(GetSeriesDetailCompletedState(series: testSeriesDetail));
+    when(() => mockSeriesRecommendationBloc.state).thenReturn(
+      GetSeriesRecommendationCompletedState(series: testSeriesList),
+    );
+    when(() => mockWatchlistSeriesBloc.state).thenReturn(
+      LoadWatchlistStatusSeriesCompletedState(isAddedToWatchlist: true),
+    );
 
     final watchlistButtonIcon = find.byIcon(Icons.check);
 
@@ -68,14 +103,19 @@ void main() {
   testWidgets(
       'Watchlist button should display Snackbar when added to watchlist',
       (WidgetTester tester) async {
-    when(mockNotifier.seriesState).thenReturn(RequestState.Loaded);
-    when(mockNotifier.series).thenReturn(
-      testSeriesDetail,
+    when(() => mockSeriesDetailBloc.state)
+        .thenReturn(GetSeriesDetailCompletedState(series: testSeriesDetail));
+    when(() => mockSeriesRecommendationBloc.state).thenReturn(
+      GetSeriesRecommendationCompletedState(series: testSeriesList),
     );
-    when(mockNotifier.recommendationState).thenReturn(RequestState.Loaded);
-    when(mockNotifier.seriesRecommendations).thenReturn(<Series>[]);
-    when(mockNotifier.isAddedToWatchlist).thenReturn(false);
-    when(mockNotifier.watchlistMessage).thenReturn('Added to Watchlist');
+    whenListen(
+      mockWatchlistSeriesBloc,
+      Stream.fromIterable([
+        AddWatchlistSeriesCompletedState(message: 'Added to Watchlist_TEST'),
+      ]),
+      initialState:
+          LoadWatchlistStatusSeriesCompletedState(isAddedToWatchlist: false),
+    );
 
     final watchlistButton = find.byType(ElevatedButton);
 
@@ -87,18 +127,27 @@ void main() {
     await tester.pump();
 
     expect(find.byType(SnackBar), findsOneWidget);
-    expect(find.text('Added to Watchlist'), findsOneWidget);
+    expect(find.text('Added to Watchlist_TEST'), findsOneWidget);
   });
 
   testWidgets(
       'Watchlist button should display Snackbar when removed from watchlist',
       (WidgetTester tester) async {
-    when(mockNotifier.seriesState).thenReturn(RequestState.Loaded);
-    when(mockNotifier.series).thenReturn(testSeriesDetail);
-    when(mockNotifier.recommendationState).thenReturn(RequestState.Loaded);
-    when(mockNotifier.seriesRecommendations).thenReturn(<Series>[]);
-    when(mockNotifier.isAddedToWatchlist).thenReturn(true);
-    when(mockNotifier.watchlistMessage).thenReturn('Removed from Watchlist');
+    when(() => mockSeriesDetailBloc.state)
+        .thenReturn(GetSeriesDetailCompletedState(series: testSeriesDetail));
+    when(() => mockSeriesRecommendationBloc.state).thenReturn(
+      GetSeriesRecommendationCompletedState(series: testSeriesList),
+    );
+    whenListen(
+      mockWatchlistSeriesBloc,
+      Stream.fromIterable([
+        RemoveWatchlistSeriesCompletedState(
+          message: 'Removed from Watchlist_TEST',
+        ),
+      ]),
+      initialState:
+          LoadWatchlistStatusSeriesCompletedState(isAddedToWatchlist: true),
+    );
 
     final watchlistButton = find.byType(ElevatedButton);
 
@@ -110,18 +159,26 @@ void main() {
     await tester.pump();
 
     expect(find.byType(SnackBar), findsOneWidget);
-    expect(find.text('Removed from Watchlist'), findsOneWidget);
+    expect(find.text('Removed from Watchlist_TEST'), findsOneWidget);
   });
 
   testWidgets(
       'Watchlist button should display AlertDialog when add to watchlist failed',
       (WidgetTester tester) async {
-    when(mockNotifier.seriesState).thenReturn(RequestState.Loaded);
-    when(mockNotifier.series).thenReturn(testSeriesDetail);
-    when(mockNotifier.recommendationState).thenReturn(RequestState.Loading);
-    when(mockNotifier.seriesRecommendations).thenReturn(<Series>[]);
-    when(mockNotifier.isAddedToWatchlist).thenReturn(false);
-    when(mockNotifier.watchlistMessage).thenReturn('Failed');
+    when(() => mockSeriesDetailBloc.state)
+        .thenReturn(GetSeriesDetailCompletedState(series: testSeriesDetail));
+    when(() => mockSeriesRecommendationBloc.state).thenReturn(
+      GetSeriesRecommendationCompletedState(series: testSeriesList),
+    );
+    whenListen(
+      mockWatchlistSeriesBloc,
+      Stream.fromIterable([
+        AddWatchlistSeriesFailedState(
+          failure: const GlobalFailureModel(message: 'Failed_TEST'),
+        ),
+      ]),
+      initialState: InitialWatchlistSeriesEventState(),
+    );
 
     final watchlistButton = find.byType(ElevatedButton);
 
@@ -133,48 +190,56 @@ void main() {
     await tester.pump();
 
     expect(find.byType(AlertDialog), findsOneWidget);
-    expect(find.text('Failed'), findsOneWidget);
+    expect(find.text('Failed_TEST'), findsOneWidget);
   });
 
   testWidgets('SeriesDetailPage should display text when error',
       (WidgetTester tester) async {
-    when(mockNotifier.seriesState).thenReturn(RequestState.Error);
-    when(mockNotifier.series).thenReturn(testSeriesDetail);
-    when(mockNotifier.recommendationState).thenReturn(RequestState.Empty);
-    when(mockNotifier.seriesRecommendations).thenReturn(<Series>[]);
-    when(mockNotifier.isAddedToWatchlist).thenReturn(false);
-    when(mockNotifier.watchlistMessage).thenReturn('Failed');
-    when(mockNotifier.message).thenReturn('Message');
+    when(() => mockSeriesDetailBloc.state).thenReturn(
+      GetSeriesDetailFailedState(
+        failure: const GlobalFailureModel(message: 'Failed_TEST'),
+      ),
+    );
+    when(() => mockSeriesRecommendationBloc.state).thenReturn(
+      GetSeriesRecommendationCompletedState(series: testSeriesList),
+    );
+    when(() => mockWatchlistSeriesBloc.state).thenReturn(
+      LoadWatchlistStatusSeriesCompletedState(isAddedToWatchlist: true),
+    );
 
     await tester.pumpWidget(makeTestableWidget(const SeriesDetailPage(id: 1)));
 
-    expect(find.text(mockNotifier.message), findsOneWidget);
+    expect(find.text('Failed_TEST'), findsOneWidget);
   });
 
   testWidgets('Recommendation should display text when error',
       (WidgetTester tester) async {
-    when(mockNotifier.seriesState).thenReturn(RequestState.Loaded);
-    when(mockNotifier.series).thenReturn(testSeriesDetail);
-    when(mockNotifier.recommendationState).thenReturn(RequestState.Error);
-    when(mockNotifier.seriesRecommendations).thenReturn(<Series>[]);
-    when(mockNotifier.isAddedToWatchlist).thenReturn(false);
-    when(mockNotifier.watchlistMessage).thenReturn('Failed');
-    when(mockNotifier.message).thenReturn('Message');
+    when(() => mockSeriesDetailBloc.state)
+        .thenReturn(GetSeriesDetailCompletedState(series: testSeriesDetail));
+    when(() => mockSeriesRecommendationBloc.state).thenReturn(
+      GetSeriesRecommendationFailedState(
+        failure: const GlobalFailureModel(message: 'Failed_TEST'),
+      ),
+    );
+    when(() => mockWatchlistSeriesBloc.state).thenReturn(
+      LoadWatchlistStatusSeriesCompletedState(isAddedToWatchlist: true),
+    );
 
     await tester.pumpWidget(makeTestableWidget(const SeriesDetailPage(id: 1)));
 
-    expect(find.text(mockNotifier.message), findsOneWidget);
+    expect(find.text('Failed_TEST'), findsOneWidget);
   });
 
   testWidgets('Recommendation should display a series when loaded',
       (WidgetTester tester) async {
-    when(mockNotifier.seriesState).thenReturn(RequestState.Loaded);
-    when(mockNotifier.series).thenReturn(testSeriesDetail);
-    when(mockNotifier.recommendationState).thenReturn(RequestState.Loaded);
-    when(mockNotifier.seriesRecommendations).thenReturn(testSeriesList);
-    when(mockNotifier.isAddedToWatchlist).thenReturn(false);
-    when(mockNotifier.watchlistMessage).thenReturn('Failed');
-    when(mockNotifier.message).thenReturn('Message');
+    when(() => mockSeriesDetailBloc.state)
+        .thenReturn(GetSeriesDetailCompletedState(series: testSeriesDetail));
+    when(() => mockSeriesRecommendationBloc.state).thenReturn(
+      GetSeriesRecommendationCompletedState(series: testSeriesList),
+    );
+    when(() => mockWatchlistSeriesBloc.state).thenReturn(
+      LoadWatchlistStatusSeriesCompletedState(isAddedToWatchlist: true),
+    );
 
     await tester.pumpWidget(makeTestableWidget(const SeriesDetailPage(id: 1)));
 
@@ -183,13 +248,14 @@ void main() {
 
   testWidgets('Page should display a CircularProgressIndicator when loading',
       (WidgetTester tester) async {
-    when(mockNotifier.seriesState).thenReturn(RequestState.Loading);
-    when(mockNotifier.series).thenReturn(testSeriesDetail);
-    when(mockNotifier.recommendationState).thenReturn(RequestState.Loaded);
-    when(mockNotifier.seriesRecommendations).thenReturn(testSeriesList);
-    when(mockNotifier.isAddedToWatchlist).thenReturn(false);
-    when(mockNotifier.watchlistMessage).thenReturn('Failed');
-    when(mockNotifier.message).thenReturn('Message');
+    when(() => mockSeriesDetailBloc.state)
+        .thenReturn(GetSeriesDetailInProgressState());
+    when(() => mockSeriesRecommendationBloc.state).thenReturn(
+      GetSeriesRecommendationCompletedState(series: testSeriesList),
+    );
+    when(() => mockWatchlistSeriesBloc.state).thenReturn(
+      LoadWatchlistStatusSeriesCompletedState(isAddedToWatchlist: true),
+    );
 
     await tester.pumpWidget(makeTestableWidget(const SeriesDetailPage(id: 1)));
 
@@ -199,13 +265,14 @@ void main() {
   testWidgets(
       'Recommendation should display a CircularProgressIndicator when loading',
       (WidgetTester tester) async {
-    when(mockNotifier.seriesState).thenReturn(RequestState.Loaded);
-    when(mockNotifier.series).thenReturn(testSeriesDetail);
-    when(mockNotifier.recommendationState).thenReturn(RequestState.Loading);
-    when(mockNotifier.seriesRecommendations).thenReturn(testSeriesList);
-    when(mockNotifier.isAddedToWatchlist).thenReturn(false);
-    when(mockNotifier.watchlistMessage).thenReturn('Failed');
-    when(mockNotifier.message).thenReturn('Message');
+    when(() => mockSeriesDetailBloc.state)
+        .thenReturn(GetSeriesDetailCompletedState(series: testSeriesDetail));
+    when(() => mockSeriesRecommendationBloc.state).thenReturn(
+      GetSeriesRecommendationInProgressState(),
+    );
+    when(() => mockWatchlistSeriesBloc.state).thenReturn(
+      LoadWatchlistStatusSeriesCompletedState(isAddedToWatchlist: true),
+    );
 
     await tester.pumpWidget(makeTestableWidget(const SeriesDetailPage(id: 1)));
 
@@ -214,13 +281,14 @@ void main() {
 
   testWidgets('Recommendation should display a Container when empty',
       (WidgetTester tester) async {
-    when(mockNotifier.seriesState).thenReturn(RequestState.Loaded);
-    when(mockNotifier.series).thenReturn(testSeriesDetail);
-    when(mockNotifier.recommendationState).thenReturn(RequestState.Empty);
-    when(mockNotifier.seriesRecommendations).thenReturn(testSeriesList);
-    when(mockNotifier.isAddedToWatchlist).thenReturn(false);
-    when(mockNotifier.watchlistMessage).thenReturn('Failed');
-    when(mockNotifier.message).thenReturn('Message');
+    when(() => mockSeriesDetailBloc.state)
+        .thenReturn(GetSeriesDetailCompletedState(series: testSeriesDetail));
+    when(() => mockSeriesRecommendationBloc.state).thenReturn(
+      GetSeriesRecommendationCompletedState(series: []),
+    );
+    when(() => mockWatchlistSeriesBloc.state).thenReturn(
+      LoadWatchlistStatusSeriesCompletedState(isAddedToWatchlist: true),
+    );
 
     await tester.pumpWidget(makeTestableWidget(const SeriesDetailPage(id: 1)));
 
@@ -238,14 +306,16 @@ void main() {
 
   testWidgets('Should go to new page after tapping recommended series',
       (WidgetTester tester) async {
-    when(mockNotifier.seriesState).thenReturn(RequestState.Loaded);
-    when(mockNotifier.series).thenReturn(testSeriesDetail);
-    when(mockNotifier.recommendationState).thenReturn(RequestState.Loaded);
-    when(mockNotifier.seriesRecommendations).thenReturn(testSeriesList);
-    when(mockNotifier.seasonState).thenReturn(RequestState.Loaded);
-    when(mockNotifier.season).thenReturn(testSeasonDetail);
-    when(mockNotifier.isAddedToWatchlist).thenReturn(false);
-    when(mockNotifier.watchlistMessage).thenReturn('Failed');
+    when(() => mockSeriesDetailBloc.state)
+        .thenReturn(GetSeriesDetailCompletedState(series: testSeriesDetail));
+    when(() => mockSeasonDetailBloc.state)
+        .thenReturn(GetSeasonDetailCompletedState(season: testSeasonDetail));
+    when(() => mockSeriesRecommendationBloc.state).thenReturn(
+      GetSeriesRecommendationCompletedState(series: testSeriesList),
+    );
+    when(() => mockWatchlistSeriesBloc.state).thenReturn(
+      LoadWatchlistStatusSeriesCompletedState(isAddedToWatchlist: true),
+    );
 
     const page2 = SeriesDetailPage(id: 123);
 

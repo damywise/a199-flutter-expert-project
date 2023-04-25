@@ -238,7 +238,8 @@ class DetailContent extends StatelessWidget {
                                     is GetMovieRecommendationFailedState) {
                                   return Text(state.failure.message);
                                 } else if (state
-                                    is GetMovieRecommendationCompletedState && state.movies.isNotEmpty) {
+                                        is GetMovieRecommendationCompletedState &&
+                                    state.movies.isNotEmpty) {
                                   return SizedBox(
                                     height: 150,
                                     child: ListView.builder(

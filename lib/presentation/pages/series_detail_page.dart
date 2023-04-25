@@ -303,7 +303,8 @@ class DetailContent extends StatelessWidget {
                                     is GetSeriesRecommendationFailedState) {
                                   return Text(state.failure.message);
                                 } else if (state
-                                    is GetSeriesRecommendationCompletedState) {
+                                        is GetSeriesRecommendationCompletedState &&
+                                    state.series.isNotEmpty) {
                                   return SizedBox(
                                     height: 150,
                                     child: ListView.builder(

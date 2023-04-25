@@ -1,27 +1,29 @@
-import 'package:ditonton/common/state_enum.dart';
+import 'package:bloc_test/bloc_test.dart';
+import 'package:ditonton/data/models/global_failure_model.dart';
+import 'package:ditonton/presentation/bloc/series/popular_series_bloc.dart';
 import 'package:ditonton/presentation/pages/popular_series_page.dart';
-import 'package:ditonton/presentation/provider/popular_series_notifier.dart';
 import 'package:ditonton/presentation/widgets/series_card_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
-import 'package:provider/provider.dart';
+import 'package:mocktail/mocktail.dart';
 
 import '../../dummy_data/dummy_objects.dart';
-import 'popular_series_page_test.mocks.dart';
 
-@GenerateMocks([PopularSeriesNotifier])
+class MockPopularSeriesBloc
+    extends MockBloc<PopularSeriesEvent, PopularSeriesState>
+    implements PopularSeriesBloc {}
+
 void main() {
-  late MockPopularSeriesNotifier mockNotifier;
+  late MockPopularSeriesBloc mockBloc;
 
   setUp(() {
-    mockNotifier = MockPopularSeriesNotifier();
+    mockBloc = MockPopularSeriesBloc();
   });
 
   Widget makeTestableWidget(Widget body) {
-    return ChangeNotifierProvider<PopularSeriesNotifier>.value(
-      value: mockNotifier,
+    return BlocProvider<PopularSeriesBloc>.value(
+      value: mockBloc,
       child: MaterialApp(
         home: body,
       ),
@@ -30,7 +32,7 @@ void main() {
 
   testWidgets('Page should display center progress bar when loading',
       (WidgetTester tester) async {
-    when(mockNotifier.state).thenReturn(RequestState.Loading);
+    when(() => mockBloc.state).thenReturn(GetPopularSeriesInProgressState());
 
     final progressBarFinder = find.byType(CircularProgressIndicator);
     final centerFinder = find.byType(Center);
@@ -43,8 +45,8 @@ void main() {
 
   testWidgets('Page should display a list of SeriesCard when data is loaded',
       (WidgetTester tester) async {
-    when(mockNotifier.state).thenReturn(RequestState.Loaded);
-    when(mockNotifier.series).thenReturn(testSeriesList);
+    when(() => mockBloc.state)
+        .thenReturn(GetPopularSeriesCompletedState(series: testSeriesList));
 
     final listViewFinder = find.byType(SeriesCard);
 
@@ -55,8 +57,11 @@ void main() {
 
   testWidgets('Page should display text with message when Error',
       (WidgetTester tester) async {
-    when(mockNotifier.state).thenReturn(RequestState.Error);
-    when(mockNotifier.message).thenReturn('Error message');
+    when(() => mockBloc.state).thenReturn(
+      GetPopularSeriesFailedState(
+        failure: const GlobalFailureModel(message: 'Error message'),
+      ),
+    );
 
     final textFinder = find.byKey(const Key('error_message'));
 
