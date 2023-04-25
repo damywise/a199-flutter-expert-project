@@ -38,7 +38,7 @@ Jika kamu menerapkan modular pada project, Anda dapat memanfaatkan berkas `test.
             | GENTHTML | C:\ProgramData\chocolatey\lib\lcov\tools\bin\genhtml |
             | LCOV_HOME | C:\ProgramData\chocolatey\lib\lcov\tools |
         
-2. Untuk mempermudah proses verifikasi testing, jalankan perintah berikut.
+~~2. Untuk mempermudah proses verifikasi testing, jalankan perintah berikut.
     ```
     git init
     ```
@@ -51,5 +51,6 @@ Jika kamu menerapkan modular pada project, Anda dapat memanfaatkan berkas `test.
     ./test.sh
     ```
     Proses ini akan men-*generate* berkas `lcov.info` dan folder `coverage` terkait dengan laporan coverage.
-4. Tunggu proses testing selesai hingga muncul web terkait laporan coverage.
+4. Tunggu proses testing selesai hingga muncul web terkait laporan coverage.~~
 
+*JANGAN JALANKAN `test.sh`!! TERDAPAT BUG YANG MEMBUAT `lcov.info` MEMENUHI DISK*
