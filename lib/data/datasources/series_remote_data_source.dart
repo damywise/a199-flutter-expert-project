@@ -7,7 +7,7 @@ import 'package:ditonton/data/models/season_detail_model.dart';
 import 'package:ditonton/data/models/series_detail_model.dart';
 import 'package:ditonton/data/models/series_model.dart';
 import 'package:ditonton/data/models/series_response.dart';
-import 'package:http/http.dart' as http;
+import 'package:http/io_client.dart';
 
 abstract class SeriesRemoteDataSource {
   Future<List<SeriesModel>> getNowPlayingSeries();
@@ -36,7 +36,7 @@ class SeriesRemoteDataSourceImpl implements SeriesRemoteDataSource {
   static const API_KEY = MovieRemoteDataSourceImpl.API_KEY;
   static const BASE_URL = MovieRemoteDataSourceImpl.BASE_URL;
 
-  final http.Client client;
+  final IOClient client;
 
   @override
   Future<List<SeriesModel>> getNowPlayingSeries() async {

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:ditonton/data/datasources/db/database_helper.dart';
 import 'package:ditonton/data/datasources/movie_local_data_source.dart';
 import 'package:ditonton/data/datasources/movie_remote_data_source.dart';
@@ -46,6 +48,7 @@ import 'package:ditonton/presentation/bloc/series/top_rated_series_bloc.dart';
 import 'package:ditonton/presentation/bloc/series/watchlist_series_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/io_client.dart';
 
 final locator = GetIt.instance;
 
@@ -204,5 +207,13 @@ void init() {
     ..registerLazySingleton<DatabaseHelper>(DatabaseHelper.new)
 
     // external
-    ..registerLazySingleton(http.Client.new);
+    // ..registerLazySingleton(http.Client.new);
+    ..registerLazySingletonAsync<IOClient>(
+      () async {
+        final client = HttpClient(context: await globalContext)
+          ..badCertificateCallback =
+              (X509Certificate cert, String host, int port) => false;
+        return IOClient(client);
+      },
+    );
 }
