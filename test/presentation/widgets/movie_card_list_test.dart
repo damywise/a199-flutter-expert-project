@@ -1,15 +1,22 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ditonton/presentation/bloc/movie/movie_detail_bloc.dart';
 import 'package:ditonton/presentation/pages/movie_detail_page.dart';
 import 'package:ditonton/presentation/widgets/movie_card_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../dummy_data/dummy_objects.dart';
+import '../pages/movie_detail_page_test.dart';
 
 class MockNavigatorObserver extends Mock implements NavigatorObserver {}
 
 void main() {
+  late MockMovieDetailBloc mockMovieDetailBloc;
+
+  setUp(() => mockMovieDetailBloc = MockMovieDetailBloc());
+
   group('MovieCard widget test', () {
     const movie = testMovie;
 
@@ -33,19 +40,22 @@ void main() {
       final mockObserver = MockNavigatorObserver();
 
       await tester.pumpWidget(
-        MaterialApp(
-          home: const Scaffold(
-            body: MovieCard(movie),
+        BlocProvider<MovieDetailBloc>.value(
+          value: mockMovieDetailBloc,
+          child: MaterialApp(
+            home: const Scaffold(
+              body: MovieCard(movie),
+            ),
+            navigatorObservers: [mockObserver],
+            onGenerateRoute: (settings) {
+              if (settings.name == MovieDetailPage.ROUTE_NAME) {
+                return MaterialPageRoute(
+                  builder: (context) => const MovieDetailPage(id: 1),
+                );
+              }
+              return null;
+            },
           ),
-          navigatorObservers: [mockObserver],
-          onGenerateRoute: (settings) {
-            if (settings.name == MovieDetailPage.ROUTE_NAME) {
-              return MaterialPageRoute(
-                builder: (context) => const MovieDetailPage(id: 1),
-              );
-            }
-            return null;
-          },
         ),
       );
 

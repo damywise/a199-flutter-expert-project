@@ -1,24 +1,34 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ditonton/presentation/bloc/series/series_detail_bloc.dart';
 import 'package:ditonton/presentation/pages/series_detail_page.dart';
 import 'package:ditonton/presentation/widgets/series_card_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../dummy_data/dummy_objects.dart';
+import '../pages/series_detail_page_test.dart';
 
 class MockNavigatorObserver extends Mock implements NavigatorObserver {}
 
 void main() {
+  late MockSeriesDetailBloc mockSeriesDetailBloc;
+
+  setUp(() => mockSeriesDetailBloc = MockSeriesDetailBloc());
+
   group('SeriesCard widget test', () {
     const series = testSeries;
 
     testWidgets('should display SeriesCard widget',
         (WidgetTester tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: SeriesCard(series),
+        BlocProvider<SeriesDetailBloc>.value(
+          value: mockSeriesDetailBloc,
+          child: const MaterialApp(
+            home: Scaffold(
+              body: SeriesCard(series),
+            ),
           ),
         ),
       );
