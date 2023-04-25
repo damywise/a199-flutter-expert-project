@@ -7,6 +7,11 @@ Repository ini merupakan starter project submission kelas Flutter Expert Dicodin
 
 ---
 
+# Firebase Screenshots
+<img width="1546" alt="image" src="https://user-images.githubusercontent.com/25608913/234176014-1255c283-dc5c-40de-9722-719102dc11dc.png">
+<img width="1546" alt="image" src="https://user-images.githubusercontent.com/25608913/234176048-791d8995-daa7-4bf7-a6b5-6a122e7e9473.png">
+
+
 ## Tips Submission Awal
 
 Pastikan untuk memeriksa kembali seluruh hasil testing pada submissionmu sebelum dikirimkan. Karena kriteria pada submission ini akan diperiksa setelah seluruh berkas testing berhasil dijalankan.
