@@ -2,7 +2,6 @@ import 'package:bloc_use_case_generator/bloc_generator.dart';
 import 'package:ditonton/data/models/global_failure_model.dart';
 import 'package:ditonton/domain/entities/movie.dart';
 import 'package:ditonton/domain/usecases/get_now_playing_movies.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'now_playing_movie_bloc.g.dart';

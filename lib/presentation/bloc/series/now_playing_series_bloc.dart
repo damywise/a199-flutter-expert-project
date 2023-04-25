@@ -2,8 +2,6 @@ import 'package:bloc_use_case_generator/bloc_generator.dart';
 import 'package:ditonton/data/models/global_failure_model.dart';
 import 'package:ditonton/domain/entities/series.dart';
 import 'package:ditonton/domain/usecases/get_now_playing_series.dart';
-import 'package:ditonton/domain/usecases/get_popular_series.dart';
-import 'package:ditonton/domain/usecases/get_top_rated_series.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'now_playing_series_bloc.g.dart';

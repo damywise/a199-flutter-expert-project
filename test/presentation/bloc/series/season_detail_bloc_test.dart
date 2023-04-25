@@ -30,10 +30,13 @@ void main() {
         );
         return SeasonDetailBloc(getSeasonDetail: getSeasonDetail);
       },
-      act: (bloc) => bloc.add(GetSeasonDetailEvent(seriesId: 1, seasonNumber: 1)),
+      act: (bloc) =>
+          bloc.add(GetSeasonDetailEvent(seriesId: 1, seasonNumber: 1)),
       expect: () => [
         isA<GetSeasonDetailInProgressState>(),
-        predicate<GetSeasonDetailCompletedState>((state) => state.season == tSeasonDetail),
+        predicate<GetSeasonDetailCompletedState>(
+          (state) => state.season == tSeasonDetail,
+        ),
       ],
       verify: (_) {
         verify(() => getSeasonDetail.execute(any(), any())).called(1);
@@ -49,10 +52,13 @@ void main() {
         );
         return SeasonDetailBloc(getSeasonDetail: getSeasonDetail);
       },
-      act: (bloc) => bloc.add(GetSeasonDetailEvent(seriesId: 1, seasonNumber: 1)),
+      act: (bloc) =>
+          bloc.add(GetSeasonDetailEvent(seriesId: 1, seasonNumber: 1)),
       expect: () => [
         isA<GetSeasonDetailInProgressState>(),
-        predicate<GetSeasonDetailFailedState>((state) => state.failure == GlobalFailureModel(message: 'test')),
+        predicate<GetSeasonDetailFailedState>(
+          (state) => state.failure == const GlobalFailureModel(message: 'test'),
+        ),
       ],
       verify: (_) {
         verify(() => getSeasonDetail.execute(any(), any())).called(1);

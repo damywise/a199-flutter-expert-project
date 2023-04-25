@@ -85,7 +85,8 @@ void main() {
             .thenAnswer((_) async => const Right(''));
         return watchlistSeriesBloc;
       },
-      act: (bloc) => bloc.add(AddWatchlistSeriesEvent(series: testSeriesDetail)),
+      act: (bloc) =>
+          bloc.add(AddWatchlistSeriesEvent(series: testSeriesDetail)),
       expect: () => [
         isA<AddWatchlistSeriesInProgressState>(),
         predicate<AddWatchlistSeriesCompletedState>(
@@ -101,7 +102,8 @@ void main() {
             .thenAnswer((_) async => const Left(ServerFailure('Failed')));
         return watchlistSeriesBloc;
       },
-      act: (bloc) => bloc.add(AddWatchlistSeriesEvent(series: testSeriesDetail)),
+      act: (bloc) =>
+          bloc.add(AddWatchlistSeriesEvent(series: testSeriesDetail)),
       expect: () => [
         isA<AddWatchlistSeriesInProgressState>(),
         predicate<AddWatchlistSeriesFailedState>(

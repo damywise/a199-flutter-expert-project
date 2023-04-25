@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-class GlobalFailureModel extends Equatable{
-  GlobalFailureModel({
+class GlobalFailureModel extends Equatable {
+  const GlobalFailureModel({
     required this.message,
   });
 

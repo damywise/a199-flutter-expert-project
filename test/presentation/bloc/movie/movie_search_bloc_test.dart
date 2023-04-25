@@ -30,7 +30,8 @@ void main() {
       expect: () => [
         isA<GetMovieSearchInProgressState>(),
         predicate<GetMovieSearchCompletedState>(
-            (state) => state.data == testMovieList),
+          (state) => state.data == testMovieList,
+        ),
       ],
     );
 
@@ -39,13 +40,16 @@ void main() {
       build: () => MovieSearchBloc(searchMovies: searchMovies),
       act: (bloc) {
         when(() => searchMovies.execute('query')).thenAnswer(
-            (invocation) async => const Left(ServerFailure('failed')));
+          (invocation) async => const Left(ServerFailure('failed')),
+        );
         bloc.add(GetMovieSearchEvent(query: 'query'));
       },
       expect: () => [
         isA<GetMovieSearchInProgressState>(),
         predicate<GetMovieSearchFailedState>(
-            (state) => state.failure == GlobalFailureModel(message: 'failed')),
+          (state) =>
+              state.failure == const GlobalFailureModel(message: 'failed'),
+        ),
       ],
     );
   });

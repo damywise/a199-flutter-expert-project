@@ -30,7 +30,8 @@ void main() {
       expect: () => [
         isA<GetSeriesSearchInProgressState>(),
         predicate<GetSeriesSearchCompletedState>(
-            (state) => state.data == testSeriesList),
+          (state) => state.data == testSeriesList,
+        ),
       ],
     );
 
@@ -39,13 +40,16 @@ void main() {
       build: () => SeriesSearchBloc(searchSeries: searchSeries),
       act: (bloc) {
         when(() => searchSeries.execute('query')).thenAnswer(
-            (invocation) async => const Left(ServerFailure('failed')));
+          (invocation) async => const Left(ServerFailure('failed')),
+        );
         bloc.add(GetSeriesSearchEvent(query: 'query'));
       },
       expect: () => [
         isA<GetSeriesSearchInProgressState>(),
         predicate<GetSeriesSearchFailedState>(
-            (state) => state.failure == GlobalFailureModel(message: 'failed')),
+          (state) =>
+              state.failure == const GlobalFailureModel(message: 'failed'),
+        ),
       ],
     );
   });

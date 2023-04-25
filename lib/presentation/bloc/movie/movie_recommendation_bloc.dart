@@ -2,7 +2,6 @@ import 'package:bloc_use_case_generator/bloc_generator.dart';
 import 'package:ditonton/data/models/global_failure_model.dart';
 import 'package:ditonton/domain/entities/movie.dart';
 import 'package:ditonton/domain/usecases/get_movie_recommendations.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'movie_recommendation_bloc.g.dart';
@@ -38,10 +37,13 @@ class MovieRecommendationBloc
 
   final GetMovieRecommendations getMovieRecommendations;
 
-  Future<void> _onGetMovieRecommendation(GetMovieRecommendationEvent event,
-      Emitter<MovieRecommendationState> emit) async {
+  Future<void> _onGetMovieRecommendation(
+    GetMovieRecommendationEvent event,
+    Emitter<MovieRecommendationState> emit,
+  ) async {
     emit(GetMovieRecommendationInProgressState());
-    final recommendationResult = await getMovieRecommendations.execute(event.id);
+    final recommendationResult =
+        await getMovieRecommendations.execute(event.id);
     recommendationResult.fold(
       (failure) {
         emit(

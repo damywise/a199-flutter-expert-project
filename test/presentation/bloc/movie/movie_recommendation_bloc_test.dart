@@ -30,13 +30,15 @@ void main() {
           (_) async => Right(tMovieRecommendation),
         );
         return MovieRecommendationBloc(
-            getMovieRecommendations: getMovieRecommendation);
+          getMovieRecommendations: getMovieRecommendation,
+        );
       },
       act: (bloc) => bloc.add(GetMovieRecommendationEvent(id: 1)),
       expect: () => [
         isA<GetMovieRecommendationInProgressState>(),
         predicate<GetMovieRecommendationCompletedState>(
-            (state) => state.movies == tMovieRecommendation),
+          (state) => state.movies == tMovieRecommendation,
+        ),
       ],
       verify: (_) {
         verify(() => getMovieRecommendation.execute(any())).called(1);
@@ -51,13 +53,15 @@ void main() {
           (_) async => const Left(ServerFailure('test')),
         );
         return MovieRecommendationBloc(
-            getMovieRecommendations: getMovieRecommendation);
+          getMovieRecommendations: getMovieRecommendation,
+        );
       },
       act: (bloc) => bloc.add(GetMovieRecommendationEvent(id: 1)),
       expect: () => [
         isA<GetMovieRecommendationInProgressState>(),
         predicate<GetMovieRecommendationFailedState>(
-            (state) => state.failure == GlobalFailureModel(message: 'test')),
+          (state) => state.failure == const GlobalFailureModel(message: 'test'),
+        ),
       ],
       verify: (_) {
         verify(() => getMovieRecommendation.execute(any())).called(1);

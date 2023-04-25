@@ -30,7 +30,8 @@ void main() {
       expect: () => [
         isA<GetTopRatedMoviesInProgressState>(),
         predicate<GetTopRatedMoviesCompletedState>(
-            (state) => state.movies == testMovieList),
+          (state) => state.movies == testMovieList,
+        ),
       ],
     );
 
@@ -39,13 +40,16 @@ void main() {
       build: () => TopRatedMovieBloc(getTopRatedMovies: topRatedMovies),
       act: (bloc) {
         when(() => topRatedMovies.execute()).thenAnswer(
-            (invocation) async => const Left(ServerFailure('failed')));
+          (invocation) async => const Left(ServerFailure('failed')),
+        );
         bloc.add(GetTopRatedMoviesEvent());
       },
       expect: () => [
         isA<GetTopRatedMoviesInProgressState>(),
         predicate<GetTopRatedMoviesFailedState>(
-            (state) => state.failure == GlobalFailureModel(message: 'failed')),
+          (state) =>
+              state.failure == const GlobalFailureModel(message: 'failed'),
+        ),
       ],
     );
   });

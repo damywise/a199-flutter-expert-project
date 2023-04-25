@@ -38,24 +38,20 @@ class _HomePageState extends State<HomePage> {
           context.read<NowPlayingMovieBloc>()..add(GetNowPlayingMoviesEvent()),
     );
     Future.microtask(
-      () =>
-          context.read<PopularMovieBloc>()..add(GetPopularMoviesEvent()),
+      () => context.read<PopularMovieBloc>()..add(GetPopularMoviesEvent()),
     );
     Future.microtask(
-      () =>
-          context.read<TopRatedMovieBloc>()..add(GetTopRatedMoviesEvent()),
+      () => context.read<TopRatedMovieBloc>()..add(GetTopRatedMoviesEvent()),
     );
     Future.microtask(
       () =>
           context.read<NowPlayingSeriesBloc>()..add(GetNowPlayingSeriesEvent()),
     );
     Future.microtask(
-      () =>
-          context.read<PopularSeriesBloc>()..add(GetPopularSeriesEvent()),
+      () => context.read<PopularSeriesBloc>()..add(GetPopularSeriesEvent()),
     );
     Future.microtask(
-      () =>
-          context.read<TopRatedSeriesBloc>()..add(GetTopRatedSeriesEvent()),
+      () => context.read<TopRatedSeriesBloc>()..add(GetTopRatedSeriesEvent()),
     );
   }
 

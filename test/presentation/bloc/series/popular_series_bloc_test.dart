@@ -30,7 +30,8 @@ void main() {
       expect: () => [
         isA<GetPopularSeriesInProgressState>(),
         predicate<GetPopularSeriesCompletedState>(
-            (state) => state.series == testSeriesList),
+          (state) => state.series == testSeriesList,
+        ),
       ],
     );
 
@@ -39,13 +40,16 @@ void main() {
       build: () => PopularSeriesBloc(getPopularSeries: popularSeries),
       act: (bloc) {
         when(() => popularSeries.execute()).thenAnswer(
-            (invocation) async => const Left(ServerFailure('failed')));
+          (invocation) async => const Left(ServerFailure('failed')),
+        );
         bloc.add(GetPopularSeriesEvent());
       },
       expect: () => [
         isA<GetPopularSeriesInProgressState>(),
         predicate<GetPopularSeriesFailedState>(
-            (state) => state.failure == GlobalFailureModel(message: 'failed')),
+          (state) =>
+              state.failure == const GlobalFailureModel(message: 'failed'),
+        ),
       ],
     );
   });

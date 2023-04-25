@@ -37,9 +37,9 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
     );
 
     Future.microtask(
-          () => context.read<MovieRecommendationBloc>().add(
-        GetMovieRecommendationEvent(id: widget.id),
-      ),
+      () => context.read<MovieRecommendationBloc>().add(
+            GetMovieRecommendationEvent(id: widget.id),
+          ),
     );
   }
 
@@ -48,9 +48,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
     return Scaffold(
       body: BlocBuilder<MovieDetailBloc, MovieDetailState>(
         builder: (context, state) {
-          print(state.runtimeType);
           if (state is GetMovieDetailCompletedState) {
-            print('test');
             final movie = state.movie;
             return SafeArea(
               child: DetailContent(
@@ -122,22 +120,22 @@ class DetailContent extends StatelessWidget {
                                 WatchlistMovieState>(
                               listener: (context, state) {
                                 final added =
-                                state is AddWatchlistMovieCompletedState;
-                                final removed = state
-                                is RemoveWatchlistMovieCompletedState;
+                                    state is AddWatchlistMovieCompletedState;
+                                final removed =
+                                    state is RemoveWatchlistMovieCompletedState;
 
                                 if (added || removed) {
                                   final message = added
                                       ? state.message
                                       : (state
-                                  as RemoveWatchlistMovieCompletedState)
-                                      .message;
+                                              as RemoveWatchlistMovieCompletedState)
+                                          .message;
 
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(content: Text(message)),
                                   );
                                 } else if (state
-                                is AddWatchlistMovieFailedState) {
+                                    is AddWatchlistMovieFailedState) {
                                   showDialog(
                                     context: context,
                                     builder: (context) {
@@ -153,11 +151,11 @@ class DetailContent extends StatelessWidget {
                                 builder: (context, state) {
                                   var isAddedWatchlist = false;
                                   final added =
-                                  state is AddWatchlistMovieCompletedState;
+                                      state is AddWatchlistMovieCompletedState;
                                   final removed = state
-                                  is RemoveWatchlistMovieCompletedState;
+                                      is RemoveWatchlistMovieCompletedState;
                                   if (state
-                                  is LoadWatchlistStatusMovieCompletedState) {
+                                      is LoadWatchlistStatusMovieCompletedState) {
                                     isAddedWatchlist = state.isAddedToWatchlist;
                                   }
                                   if (added) {
@@ -170,15 +168,16 @@ class DetailContent extends StatelessWidget {
                                     onPressed: () {
                                       if (!isAddedWatchlist) {
                                         context.read<WatchlistMovieBloc>().add(
-                                          AddWatchlistMovieEvent(
-                                              movie: movie),
-                                        );
+                                              AddWatchlistMovieEvent(
+                                                movie: movie,
+                                              ),
+                                            );
                                       } else {
                                         context.read<WatchlistMovieBloc>().add(
-                                          RemoveWatchlistMovieEvent(
-                                            movie: movie,
-                                          ),
-                                        );
+                                              RemoveWatchlistMovieEvent(
+                                                movie: movie,
+                                              ),
+                                            );
                                       }
                                     },
                                     child: Row(
@@ -239,7 +238,7 @@ class DetailContent extends StatelessWidget {
                                     is GetMovieRecommendationFailedState) {
                                   return Text(state.failure.message);
                                 } else if (state
-                                    is GetMovieRecommendationCompletedState) {
+                                    is GetMovieRecommendationCompletedState && state.movies.isNotEmpty) {
                                   return SizedBox(
                                     height: 150,
                                     child: ListView.builder(

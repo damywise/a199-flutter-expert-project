@@ -2,7 +2,6 @@ import 'package:bloc_use_case_generator/bloc_generator.dart';
 import 'package:ditonton/data/models/global_failure_model.dart';
 import 'package:ditonton/domain/entities/movie.dart';
 import 'package:ditonton/domain/usecases/get_popular_movies.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'popular_movie_bloc.g.dart';
@@ -25,8 +24,7 @@ abstract class PopularMovieState {}
 class PopularMovieBloc extends Bloc<PopularMovieEvent, PopularMovieState> {
   PopularMovieBloc({
     required GetPopularMovies getPopularMovies,
-  })  :
-        _getPopularMovies = getPopularMovies,
+  })  : _getPopularMovies = getPopularMovies,
         super(InitialPopularMovieEventState()) {
     on<GetPopularMoviesEvent>(
       (event, emit) => _onGetPopularMovies(),

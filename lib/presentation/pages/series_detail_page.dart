@@ -40,9 +40,9 @@ class _SeriesDetailPageState extends State<SeriesDetailPage> with RouteAware {
     );
 
     Future.microtask(
-          () => context.read<SeriesRecommendationBloc>().add(
-        GetSeriesRecommendationEvent(id: widget.id),
-      ),
+      () => context.read<SeriesRecommendationBloc>().add(
+            GetSeriesRecommendationEvent(id: widget.id),
+          ),
     );
   }
 
@@ -96,8 +96,7 @@ class DetailContent extends StatelessWidget {
     return Stack(
       children: [
         CachedNetworkImage(
-          imageUrl:
-              'https://image.tmdb.org/t/p/w500${series.posterPath}',
+          imageUrl: 'https://image.tmdb.org/t/p/w500${series.posterPath}',
           width: screenWidth,
           placeholder: (context, url) => const Center(
             child: CircularProgressIndicator(),
@@ -185,7 +184,8 @@ class DetailContent extends StatelessWidget {
                                       if (!isAddedWatchlist) {
                                         context.read<WatchlistSeriesBloc>().add(
                                               AddWatchlistSeriesEvent(
-                                                  series: series),
+                                                series: series,
+                                              ),
                                             );
                                       } else {
                                         context.read<WatchlistSeriesBloc>().add(

@@ -30,7 +30,8 @@ class EpisodeDetailBloc extends Bloc<EpisodeDetailEvent, EpisodeDetailState> {
   EpisodeDetailBloc({
     required this.getEpisodeDetail,
   }) : super(InitialEpisodeDetailState()) {
-    on<GetEpisodeDetailEvent>(_onGetEpisodeDetail,
+    on<GetEpisodeDetailEvent>(
+      _onGetEpisodeDetail,
     );
   }
 
@@ -39,13 +40,17 @@ class EpisodeDetailBloc extends Bloc<EpisodeDetailEvent, EpisodeDetailState> {
 
   final GetEpisodeDetail getEpisodeDetail;
 
-  Future<void> _onGetEpisodeDetail(GetEpisodeDetailEvent event, Emitter<EpisodeDetailState> emit) async {
+  Future<void> _onGetEpisodeDetail(
+    GetEpisodeDetailEvent event,
+    Emitter<EpisodeDetailState> emit,
+  ) async {
     emit(GetEpisodeDetailInProgressState());
     final seriesId = event.seriesId;
     final seasonNumber = event.seasonNumber;
     final episodeNumber = event.episodeNumber;
 
-    final detailResult = await getEpisodeDetail.execute(seriesId, seasonNumber, episodeNumber);
+    final detailResult =
+        await getEpisodeDetail.execute(seriesId, seasonNumber, episodeNumber);
     detailResult.fold(
       (failure) {
         emit(
@@ -59,5 +64,4 @@ class EpisodeDetailBloc extends Bloc<EpisodeDetailEvent, EpisodeDetailState> {
       },
     );
   }
-
 }

@@ -24,8 +24,7 @@ abstract class PopularSeriesState {}
 class PopularSeriesBloc extends Bloc<PopularSeriesEvent, PopularSeriesState> {
   PopularSeriesBloc({
     required GetPopularSeries getPopularSeries,
-  })  :
-        _getPopularSeries = getPopularSeries,
+  })  : _getPopularSeries = getPopularSeries,
         super(InitialPopularSeriesEventState()) {
     on<GetPopularSeriesEvent>(
       (event, emit) => _onGetPopularSeries(),

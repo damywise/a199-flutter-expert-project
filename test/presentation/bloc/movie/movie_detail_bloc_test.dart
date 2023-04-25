@@ -33,7 +33,9 @@ void main() {
       act: (bloc) => bloc.add(GetMovieDetailEvent(id: 1)),
       expect: () => [
         isA<GetMovieDetailInProgressState>(),
-        predicate<GetMovieDetailCompletedState>((state) => state.movie == tMovieDetail),
+        predicate<GetMovieDetailCompletedState>(
+          (state) => state.movie == tMovieDetail,
+        ),
       ],
       verify: (_) {
         verify(() => getMovieDetail.execute(any())).called(1);
@@ -52,7 +54,9 @@ void main() {
       act: (bloc) => bloc.add(GetMovieDetailEvent(id: 1)),
       expect: () => [
         isA<GetMovieDetailInProgressState>(),
-        predicate<GetMovieDetailFailedState>((state) => state.failure == GlobalFailureModel(message: 'test')),
+        predicate<GetMovieDetailFailedState>(
+          (state) => state.failure == const GlobalFailureModel(message: 'test'),
+        ),
       ],
       verify: (_) {
         verify(() => getMovieDetail.execute(any())).called(1);

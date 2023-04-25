@@ -78,7 +78,7 @@ void init() {
       ),
     )
     ..registerFactory(
-          () => MovieRecommendationBloc(
+      () => MovieRecommendationBloc(
         getMovieRecommendations: locator(),
       ),
     )

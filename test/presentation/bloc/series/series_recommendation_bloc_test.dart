@@ -60,7 +60,7 @@ void main() {
       expect: () => [
         isA<GetSeriesRecommendationInProgressState>(),
         predicate<GetSeriesRecommendationFailedState>(
-          (state) => state.failure == GlobalFailureModel(message: 'test'),
+          (state) => state.failure == const GlobalFailureModel(message: 'test'),
         ),
       ],
       verify: (_) {

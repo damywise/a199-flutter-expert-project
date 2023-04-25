@@ -13,7 +13,8 @@ void main() {
   group('SeriesCard widget test', () {
     const series = testSeries;
 
-    testWidgets('should display SeriesCard widget', (WidgetTester tester) async {
+    testWidgets('should display SeriesCard widget',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
@@ -29,30 +30,31 @@ void main() {
     });
 
     testWidgets('should navigate to SeriesDetailPage when tapped',
-            (WidgetTester tester) async {
-          final mockObserver = MockNavigatorObserver();
+        (WidgetTester tester) async {
+      final mockObserver = MockNavigatorObserver();
 
-          await tester.pumpWidget(
-            MaterialApp(
-              home: const Scaffold(
-                body: SeriesCard(series),
-              ),
-              navigatorObservers: [mockObserver],
-              onGenerateRoute: (settings) {
-                if (settings.name == SeriesDetailPage.ROUTE_NAME) {
-                  return MaterialPageRoute(
-                      builder: (context) => const SeriesDetailPage(id: 1));
-                }
-                return null;
-              },
-            ),
-          );
+      await tester.pumpWidget(
+        MaterialApp(
+          home: const Scaffold(
+            body: SeriesCard(series),
+          ),
+          navigatorObservers: [mockObserver],
+          onGenerateRoute: (settings) {
+            if (settings.name == SeriesDetailPage.ROUTE_NAME) {
+              return MaterialPageRoute(
+                builder: (context) => const SeriesDetailPage(id: 1),
+              );
+            }
+            return null;
+          },
+        ),
+      );
 
-          await tester.tap(find.byType(InkWell));
-          await tester.pumpAndSettle();
+      await tester.tap(find.byType(InkWell));
+      await tester.pumpAndSettle();
 
-          // verify(mockObserver.didPush(any(), any())).captured.first;
-          expect(find.byType(SeriesDetailPage), findsOneWidget);
-        });
+      // verify(mockObserver.didPush(any(), any())).captured.first;
+      expect(find.byType(SeriesDetailPage), findsOneWidget);
+    });
   });
 }

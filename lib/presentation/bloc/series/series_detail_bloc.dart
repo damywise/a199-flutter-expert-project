@@ -1,10 +1,6 @@
 import 'package:bloc_use_case_generator/bloc_generator.dart';
 import 'package:ditonton/data/models/global_failure_model.dart';
-import 'package:ditonton/domain/entities/episode.dart';
-import 'package:ditonton/domain/entities/season_detail.dart';
 import 'package:ditonton/domain/entities/series_detail.dart';
-import 'package:ditonton/domain/usecases/get_episode_detail.dart';
-import 'package:ditonton/domain/usecases/get_season_detail.dart';
 import 'package:ditonton/domain/usecases/get_series_detail.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -37,7 +33,10 @@ class SeriesDetailBloc extends Bloc<SeriesDetailEvent, SeriesDetailState> {
 
   final GetSeriesDetail getSeriesDetail;
 
-  Future<void> _onGetSeriesDetail(GetSeriesDetailEvent event, Emitter<SeriesDetailState> emit) async {
+  Future<void> _onGetSeriesDetail(
+    GetSeriesDetailEvent event,
+    Emitter<SeriesDetailState> emit,
+  ) async {
     emit(GetSeriesDetailInProgressState());
 
     final id = event.id;

@@ -19,10 +19,12 @@ class _WatchlistPageState extends State<WatchlistPage> with RouteAware {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() =>
-        context.read<WatchlistMovieBloc>().add(GetWatchlistMoviesEvent()));
-    Future.microtask(() =>
-        context.read<WatchlistSeriesBloc>().add(GetWatchlistSeriesEvent()));
+    Future.microtask(
+      () => context.read<WatchlistMovieBloc>().add(GetWatchlistMoviesEvent()),
+    );
+    Future.microtask(
+      () => context.read<WatchlistSeriesBloc>().add(GetWatchlistSeriesEvent()),
+    );
   }
 
   bool tvSeriesMode = true;

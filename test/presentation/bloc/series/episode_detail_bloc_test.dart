@@ -30,10 +30,18 @@ void main() {
         );
         return EpisodeDetailBloc(getEpisodeDetail: getEpisodeDetail);
       },
-      act: (bloc) => bloc.add(GetEpisodeDetailEvent(seriesId: 1, seasonNumber: 1,episodeNumber: 1)),
+      act: (bloc) => bloc.add(
+        GetEpisodeDetailEvent(
+          seriesId: 1,
+          seasonNumber: 1,
+          episodeNumber: 1,
+        ),
+      ),
       expect: () => [
         isA<GetEpisodeDetailInProgressState>(),
-        predicate<GetEpisodeDetailCompletedState>((state) => state.episode == tEpisodeDetail),
+        predicate<GetEpisodeDetailCompletedState>(
+          (state) => state.episode == tEpisodeDetail,
+        ),
       ],
       verify: (_) {
         verify(() => getEpisodeDetail.execute(any(), any(), any())).called(1);
@@ -49,10 +57,18 @@ void main() {
         );
         return EpisodeDetailBloc(getEpisodeDetail: getEpisodeDetail);
       },
-      act: (bloc) => bloc.add(GetEpisodeDetailEvent(seriesId: 1, seasonNumber: 1, episodeNumber: 1)),
+      act: (bloc) => bloc.add(
+        GetEpisodeDetailEvent(
+          seriesId: 1,
+          seasonNumber: 1,
+          episodeNumber: 1,
+        ),
+      ),
       expect: () => [
         isA<GetEpisodeDetailInProgressState>(),
-        predicate<GetEpisodeDetailFailedState>((state) => state.failure == GlobalFailureModel(message: 'test')),
+        predicate<GetEpisodeDetailFailedState>(
+          (state) => state.failure == const GlobalFailureModel(message: 'test'),
+        ),
       ],
       verify: (_) {
         verify(() => getEpisodeDetail.execute(any(), any(), any())).called(1);

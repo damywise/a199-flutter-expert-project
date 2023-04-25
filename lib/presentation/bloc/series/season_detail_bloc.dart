@@ -1,6 +1,5 @@
 import 'package:bloc_use_case_generator/bloc_generator.dart';
 import 'package:ditonton/data/models/global_failure_model.dart';
-import 'package:ditonton/domain/entities/episode.dart';
 import 'package:ditonton/domain/entities/season_detail.dart';
 import 'package:ditonton/domain/usecases/get_season_detail.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,7 +29,8 @@ class SeasonDetailBloc extends Bloc<SeasonDetailEvent, SeasonDetailState> {
   SeasonDetailBloc({
     required this.getSeasonDetail,
   }) : super(InitialSeasonDetailState()) {
-    on<GetSeasonDetailEvent>(_onGetSeasonDetail,
+    on<GetSeasonDetailEvent>(
+      _onGetSeasonDetail,
     );
   }
 
@@ -39,7 +39,10 @@ class SeasonDetailBloc extends Bloc<SeasonDetailEvent, SeasonDetailState> {
 
   final GetSeasonDetail getSeasonDetail;
 
-  Future<void> _onGetSeasonDetail(GetSeasonDetailEvent event, Emitter<SeasonDetailState> emit) async {
+  Future<void> _onGetSeasonDetail(
+    GetSeasonDetailEvent event,
+    Emitter<SeasonDetailState> emit,
+  ) async {
     emit(GetSeasonDetailInProgressState());
     final seriesId = event.seriesId;
     final seasonNumber = event.seasonNumber;
@@ -58,5 +61,4 @@ class SeasonDetailBloc extends Bloc<SeasonDetailEvent, SeasonDetailState> {
       },
     );
   }
-
 }

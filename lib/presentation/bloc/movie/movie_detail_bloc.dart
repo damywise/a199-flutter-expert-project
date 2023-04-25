@@ -2,7 +2,6 @@ import 'package:bloc_use_case_generator/bloc_generator.dart';
 import 'package:ditonton/data/models/global_failure_model.dart';
 import 'package:ditonton/domain/entities/movie_detail.dart';
 import 'package:ditonton/domain/usecases/get_movie_detail.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'movie_detail_bloc.g.dart';
@@ -35,7 +34,9 @@ class MovieDetailBloc extends Bloc<MovieDetailEvent, MovieDetailState> {
   final GetMovieDetail getMovieDetail;
 
   Future<void> _onGetMovieDetail(
-      GetMovieDetailEvent event, Emitter<MovieDetailState> emit) async {
+    GetMovieDetailEvent event,
+    Emitter<MovieDetailState> emit,
+  ) async {
     emit(GetMovieDetailInProgressState());
 
     final detailResult = await getMovieDetail.execute(event.id);

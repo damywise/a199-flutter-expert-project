@@ -33,7 +33,9 @@ void main() {
       act: (bloc) => bloc.add(GetSeriesDetailEvent(id: 1)),
       expect: () => [
         isA<GetSeriesDetailInProgressState>(),
-        predicate<GetSeriesDetailCompletedState>((state) => state.series == tSeriesDetail),
+        predicate<GetSeriesDetailCompletedState>(
+          (state) => state.series == tSeriesDetail,
+        ),
       ],
       verify: (_) {
         verify(() => getSeriesDetail.execute(any())).called(1);
@@ -52,7 +54,9 @@ void main() {
       act: (bloc) => bloc.add(GetSeriesDetailEvent(id: 1)),
       expect: () => [
         isA<GetSeriesDetailInProgressState>(),
-        predicate<GetSeriesDetailFailedState>((state) => state.failure == GlobalFailureModel(message: 'test')),
+        predicate<GetSeriesDetailFailedState>(
+          (state) => state.failure == const GlobalFailureModel(message: 'test'),
+        ),
       ],
       verify: (_) {
         verify(() => getSeriesDetail.execute(any())).called(1);

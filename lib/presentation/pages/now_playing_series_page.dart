@@ -17,7 +17,8 @@ class _NowPlayingSeriesPageState extends State<NowPlayingSeriesPage> {
   void initState() {
     super.initState();
     Future.microtask(
-      () => context.read<NowPlayingSeriesBloc>().add(GetNowPlayingSeriesEvent()),
+      () =>
+          context.read<NowPlayingSeriesBloc>().add(GetNowPlayingSeriesEvent()),
     );
   }
 
