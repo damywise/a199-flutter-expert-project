@@ -28,7 +28,8 @@ void main() {
 
     const series = testSeries;
 
-    testWidgets('should display SeriesCard widget', (WidgetTester tester) async {
+    testWidgets('should display SeriesCard widget',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         MultiBlocProvider(
           providers: [

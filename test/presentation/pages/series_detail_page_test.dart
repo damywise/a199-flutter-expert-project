@@ -177,7 +177,7 @@ void main() {
           failure: const GlobalFailureModel(message: 'Failed_TEST'),
         ),
       ]),
-      initialState: InitialWatchlistSeriesEventState(),
+      initialState: LoadWatchlistStatusSeriesCompletedState(isAddedToWatchlist: false),
     );
 
     final watchlistButton = find.byType(ElevatedButton);
