@@ -32,11 +32,12 @@ class DatabaseHelper {
   Future<void> _onCreate(Database db, int version) async {
     await db.execute('''
       CREATE TABLE  $_tblWatchlist (
-        id INTEGER PRIMARY KEY,
+        id INTEGER,
         title TEXT,
         overview TEXT,
         posterPath TEXT,
-        series INTEGER PRIMARY KEy,
+        series INTEGER,
+        PRIMARY KEY (id, series)
       );
     ''');
   }

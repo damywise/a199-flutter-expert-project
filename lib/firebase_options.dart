@@ -60,7 +60,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '527533485147',
     projectId: 'dicodingfinalproject',
     storageBucket: 'dicodingfinalproject.appspot.com',
-    iosClientId: '527533485147-rf13d7kc2vrrthlp165qbq8f1kdhvko0.apps.googleusercontent.com',
+    iosClientId:
+        '527533485147-rf13d7kc2vrrthlp165qbq8f1kdhvko0.apps.googleusercontent.com',
     iosBundleId: 'com.dicoding.ditonton',
   );
 
@@ -70,7 +71,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '527533485147',
     projectId: 'dicodingfinalproject',
     storageBucket: 'dicodingfinalproject.appspot.com',
-    iosClientId: '527533485147-l6nc6p3lb03o9cdmr3rb8281qqpikt13.apps.googleusercontent.com',
+    iosClientId:
+        '527533485147-l6nc6p3lb03o9cdmr3rb8281qqpikt13.apps.googleusercontent.com',
     iosBundleId: 'com.dicoding.a199FlutterExpertProject',
   );
 }
